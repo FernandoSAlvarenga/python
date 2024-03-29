@@ -3,7 +3,7 @@
 lista = []
 
 while True:
-    tecla_parada = input("Pressione uma tecla para parar de agregar números à lista: ")
+    tecla_parada = input("Pressione uma tecla para parar de adicionar números à lista: ")
     if not tecla_parada.isdigit():#A função isdigit() verifica se a string digitada é composta apenas por dígitos. Se a string digitada for um número inteiro, uma mensagem de erro é exibida e o usuário é solicitado a digitar novamente.
         break
     else:
@@ -17,11 +17,11 @@ while True:
 print(f'A lista digitada é: {lista}')
 
 while True:
-    deletar_codigo = int(input('Digite o código para ser retirado da lista: '))# estava em loop por não ter essa entrada de dados.
-    if deletar_codigo in lista:
-        lista.remove(deletar_codigo)
+    num_removido = int(input('Digite o código para ser retirado da lista: '))# estava em loop por não ter essa entrada de dados.
+    if num_removido in lista:
+        lista.remove(num_removido)
         break
     else:
-        print(f'Este código {deletar_codigo} não esta na lista!')
+        print(f'Este número {num_removido} não esta na lista!')
     
-print(f'O Código deletado foi: {deletar_codigo}, a lista atualizada é: {lista}')
+print(f'O número deletado foi: {num_removido}, a lista atualizada é: {lista}')

@@ -15,7 +15,7 @@ while True:
         break
     valor = int(valor)
     lista.append(valor)
-   
+
 num_pesquisa = int(input('Digite números para pesquisa: '))
 num_vezes = lista.count(num_pesquisa)
 print(f'Quantidade de vezes que o {num_pesquisa} aparece é: {num_vezes}')
@@ -25,9 +25,3 @@ print(f'Quantidade de vezes que o {num_pesquisa} aparece é: {num_vezes}')
 
 
 
-
-#lista = []
-
-#valor = int(input('Digite o número: '))
-#lista.count(valor)
-#print(f'O maior valor é: {lista}')
