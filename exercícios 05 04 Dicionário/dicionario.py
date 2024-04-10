@@ -242,7 +242,8 @@ while True:
                         diferenca_chaves = {}
                         for chave in dicionario1:
                             if chave not in dicionario2:
-                                diferenca_chaves[chave] = dicionario1[chave]
+                                diferenca_chaves
+                                [chave] = dicionario1[chave]
 
                         print(diferenca_chaves)
 
@@ -275,8 +276,8 @@ while True:
                         diferenca_valores = {}
                         #Itera sobre cada par de chave-valor no dicionário dicionario1.
                         for chave, valor in dicionario1.items():
-                         #Verifica se a chave e o valor do par atual não estão presentes no dicionário
-                         if (chave, valor) not in dicionario2.items():
+                        #Verifica se a chave e o valor do par atual não estão presentes no dicionário
+                        if (chave, valor) not in dicionario2.items():
                             diferenca_valores[chave] = valor
 
                         print(diferenca_valores)
