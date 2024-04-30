@@ -49,6 +49,7 @@ class ContaCorrente(Conta):
       else:
         # Saldo insuficiente, usar cheque especial se disponível
         disponivel_cheque_especial = self.limite_cheque_especial - (self.saldo - valor)
+        
         if disponivel_cheque_especial >= 0:
           self.saldo -= valor
           self.limite_cheque_especial -= disponivel_cheque_especial

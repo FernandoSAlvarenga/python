@@ -6,3 +6,17 @@ O botão deve ter o texto "Clique em Mim". '''
 import tkinter as tk
 
 #começar literalmente pelo exercício:
+
+
+    janela = tk.Tk()
+    janela.title("Minha Primeira Interface")
+    janela.geometry("300x200")
+
+    rotulo = tk.Label(janela, text="Olá, Tkinter!")
+    rotulo.pack()
+
+    botao = tk.Button(janela, text="Clique em mim!")
+    botao.pack()
+
+
+

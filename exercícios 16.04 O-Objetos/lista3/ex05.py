@@ -32,7 +32,7 @@ class Conta:
     def consulta_saldo(self):
         print(f'Olá {self.titular}, seu saldo é {self.saldo}')
         
-class Conta_Poupanca(Conta):
+class ContaPoupanca(Conta):
     def __init__(self, titular, saldo, taxa_juros):
         super().__init__(titular, saldo)
         self.taxa_juros = taxa_juros
@@ -43,7 +43,7 @@ class Conta_Poupanca(Conta):
         print(f'Olá {self.titular}, voce teve {self.taxa_juros} de rendimento.')
         print(f'Seu saldo atualizado é: {self.saldo}')
         
-class Conta_Corrente(Conta):
+class ContaCorrente(Conta):
     def __init__(self, titular, saldo, cheque_especial):
         super().__init__(titular, saldo)
         self.cheque_especial = cheque_especial
@@ -56,10 +56,21 @@ class Conta_Corrente(Conta):
             else:
                 saldo_cheque_especial = self.cheque_especial - (self.saldo - valor)
         
-            if saldo_cheque_especial >= 0:
-                self.saldo -= valor
-                self.cheque_especial -= self.saldo_cheque_especial
-                print(f"Saque de R${valor:.2f} realizado utilizando o cheque especial da conta de {self.titular}!")
-            else:
-                print("Saldo insuficiente e limite do cheque especial indisponível.")
+                if saldo_cheque_especial >= 0:
+                    self.saldo -= valor
+                    self.cheque_especial -= self.saldo_cheque_especial
+                    print(f"Saque de R${valor:.2f} realizado utilizando o cheque especial da conta de {self.titular}!")
+                else:
+                    print("Saldo insuficiente e limite do cheque especial indisponível.")
                 
+conta_poupanca = ContaPoupanca("Tay", 1000, 500)
+conta_corrente = ContaCorrente("Eloise Rola", 1500, 600)
+
+conta_poupanca.depositar(900)
+conta_poupanca.sacar(250)
+conta_poupanca.consulta_saldo()
+conta_poupanca.calculo_rendimento()  
+
+conta_corrente.depositar(950)
+conta_corrente.sacar(200)  
+conta_corrente.consulta_saldo()
