@@ -11,14 +11,14 @@ def calcular_caracteres():
     caracteres_nao_vazios = total_caracteres - caracteres_vazios - caracteres_especiais
     
     etiqueta_resultado.config(text=f"Total de caracteres: {total_caracteres}\n"
-                                   f"Caracteres vazios: {caracteres_vazios}\n"
-                                   f"Caracteres especiais: {caracteres_especiais}\n"
-                                   f"Caracteres preenchidos: {caracteres_nao_vazios}")
+                f"Caracteres vazios: {caracteres_vazios}\n"
+                f"Caracteres especiais: {caracteres_especiais}\n"
+                f"Caracteres preenchidos: {caracteres_nao_vazios}")
 
 def salvar_conteudo():
     conteudo_texto = campo_texto.get(1.0, tk.END)
     caminho_arquivo = filedialog.asksaveasfilename(defaultextension=".txt", 
-                                                   filetypes=[("Text files", ".txt"), ("All files", ".*")])
+                filetypes=[("Text files", ".txt"), ("All files", ".*")])
     if caminho_arquivo:
         try:
             with open(caminho_arquivo, 'w', encoding='utf-8') as arquivo:
@@ -29,7 +29,7 @@ def salvar_conteudo():
 
 def carregar_conteudo():
     caminho_arquivo = filedialog.askopenfilename(defaultextension=".txt", 
-                                                 filetypes=[("Text files", ".txt"), ("All files", ".*")])
+                filetypes=[("Text files", ".txt"), ("All files", ".*")])
     if caminho_arquivo:
         try:
             with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
