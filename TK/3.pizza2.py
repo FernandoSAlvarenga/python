@@ -38,7 +38,7 @@ tamanhos = ["Pequena", "Média", "Grande"]
 precos = {"Pequena": 15.00, "Média": 22.00, "Grande": 28.00}
 
 # Lista de ingredientes adicionais e preços
-ingredientes = ["Queijo Extra R$:2,00", "Pepperoni R$:3,00", "Bacon R$:4,00"]
+ingredientes = ["Queijo Extra", "Pepperoni", "Bacon"]
 precos_ingredientes = {"Queijo Extra": 2.00, "Pepperoni": 3.00, "Bacon": 4.00}
 
 # Criando a janela principal
@@ -82,15 +82,20 @@ rb_4_sabores.grid(row=4, column=1, padx=5, pady=5, sticky="e")
 # Ingredientes adicionais
 lbl_ingredientes = tk.Label(janela, text="Ingredientes Adicionais:")
 lbl_ingredientes.grid(row=5, column=0, padx=5, pady=5)
+
 ingredientes_vars = {}
+precos_ingredientes_lbls = {}
 for i, ing in enumerate(ingredientes):
     ingredientes_vars[ing] = tk.IntVar()
-    chk = tk.Checkbutton(janela, text=ing, variable=ingredientes_vars[ing])
-    chk.grid(row=5 + i, column=1, padx=5, pady=5, sticky="w")
+    ingredientes_cb = tk.Checkbutton(janela, text=ing, variable=ingredientes_vars[ing])
+    ingredientes_cb.grid(row=6 + i, column=0, padx=5, pady=5, sticky="w")
+    
+    preco_lbl = tk.Label(janela, text=f"R${precos_ingredientes[ing]:.2f}")
+    preco_lbl.grid(row=6 + i, column=1, padx=5, pady=5)
 
 # Botão para fazer o pedido
 botao_pedido = tk.Button(janela, text="Pedir", command=fazer_pedido)
-botao_pedido.grid(row=5 + len(ingredientes), column=0, columnspan=2, padx=5, pady=5)
+botao_pedido.grid(row=6 + len(ingredientes), column=0, columnspan=2, padx=5, pady=5)
 
 # Iniciando o loop da interface gráfica
 janela.mainloop()
