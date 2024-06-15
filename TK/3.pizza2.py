@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 
-# chamada quando o botão de pedido é clicado
+# aqui a função é chamada quando o batão pedir for clicado.
 def fazer_pedido():
-    tamanho = var_tamanho.get()
+    tamanho = var_tamanho.get() #pelo get o tamanho da pizza  
     try:
         quantidade = int(entrada_quantidade.get())
         if quantidade <= 0:
@@ -23,7 +23,7 @@ def fazer_pedido():
         messagebox.showerror("Erro", "Pizza grande só pode ter 1, 2 ou 4 sabores.")
         return
 
-    # Cálculo do total a pagar
+    
     total = precos[tamanho] * quantidade
     for ing in ingredientes:
         if ingredientes_vars[ing].get() == 1:
@@ -33,27 +33,28 @@ def fazer_pedido():
     if messagebox.askyesno("Confirmar Pedido", mensagem_pedido):
         messagebox.showinfo("Pedido Realizado", "Seu pedido foi confirmado!")
 
-# Listas e dicionários de tamanhos e preços
+
 tamanhos = ["Pequena", "Média", "Grande"]
-precos = {"Pequena": 15.00, "Média": 22.00, "Grande": 28.00}
+precos = {"Pequena": 17.00, "Média": 25.00, "Grande": 32.00}
 
-# Lista de ingredientes adicionais e preços
+
 ingredientes = ["Queijo Extra", "Pepperoni", "Bacon"]
-precos_ingredientes = {"Queijo Extra": 2.00, "Pepperoni": 3.00, "Bacon": 4.00}
+precos_ingredientes = {"Queijo Extra": 6.00, "Pepperoni": 9.00, "Bacon": 7.00}
 
-# Criando a janela principal
+
 janela = tk.Tk()
 janela.title("Pedido de Pizza")
 
-# Título
+
 lbl_titulo = tk.Label(janela, text="Escolha o Tamanho da Pizza", font=("Helvetica", 16))
-lbl_titulo.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+lbl_titulo.grid(row=0, column=0, columnspan=2, padx=5, pady=5) #columnspan=2 ocupa duas colunas - row=0, column=0 primeira linha e primeira coluna
+#padx=5, pady=5  Add espaço de 5 pixels a volta do texto
 
-# Preços dos tamanhos
 lbl_precos = tk.Label(janela, text=f"Pequena: R${precos['Pequena']:.2f}\nMédia: R${precos['Média']:.2f}\nGrande: R${precos['Grande']:.2f}")
-lbl_precos.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+lbl_precos.grid(row=1, column=0, columnspan=2, padx=5, pady=5) #row=1, column=0: Coloca o texto na segunda linha e primeira coluna.
+#columnspan=2: Faz o texto ocupar duas colunas. padx=5, pady=5: Add espaço de 5 pixels a volta do texto
 
-# Criando e posicionando o OptionMenu para selecionar o tamanho
+
 lbl_tamanho = tk.Label(janela, text="Tamanho da Pizza:")
 lbl_tamanho.grid(row=2, column=0, padx=5, pady=5)
 var_tamanho = tk.StringVar(janela)
@@ -61,13 +62,13 @@ var_tamanho.set(tamanhos[0])
 menu_tamanho = tk.OptionMenu(janela, var_tamanho, *tamanhos)
 menu_tamanho.grid(row=2, column=1, padx=5, pady=5)
 
-# Campo de entrada para o número de pizzas
+
 lbl_quantidade = tk.Label(janela, text="Quantidade de Pizzas:")
 lbl_quantidade.grid(row=3, column=0, padx=5, pady=5)
 entrada_quantidade = tk.Entry(janela)
 entrada_quantidade.grid(row=3, column=1, padx=5, pady=5)
 
-# Opção para selecionar o número de sabores
+
 lbl_sabores = tk.Label(janela, text="Número de Sabores:")
 lbl_sabores.grid(row=4, column=0, padx=5, pady=5)
 var_sabores = tk.IntVar(janela)
@@ -79,7 +80,7 @@ rb_1_sabor.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 rb_2_sabores.grid(row=4, column=1, padx=5, pady=5)
 rb_4_sabores.grid(row=4, column=1, padx=5, pady=5, sticky="e")
 
-# Ingredientes adicionais
+
 lbl_ingredientes = tk.Label(janela, text="Ingredientes Adicionais:")
 lbl_ingredientes.grid(row=5, column=0, padx=5, pady=5)
 
@@ -93,9 +94,9 @@ for i, ing in enumerate(ingredientes):
     preco_lbl = tk.Label(janela, text=f"R${precos_ingredientes[ing]:.2f}")
     preco_lbl.grid(row=6 + i, column=1, padx=5, pady=5)
 
-# Botão para fazer o pedido
+
 botao_pedido = tk.Button(janela, text="Pedir", command=fazer_pedido)
 botao_pedido.grid(row=6 + len(ingredientes), column=0, columnspan=2, padx=5, pady=5)
 
-# Iniciando o loop da interface gráfica
+
 janela.mainloop()
