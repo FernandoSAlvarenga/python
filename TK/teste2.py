@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
+import datetime
 
 
 
@@ -86,15 +87,20 @@ def fazer_pedido():
 
     total = precos[tamanho] * quantidade
     total_ingredientes = sum(precos_ingredientes[ing] for ing in ingredientes_selecionados) * quantidade
-
+    total_pedido = total + total_ingredientes
     mensagem_sabores = ", ".join(sabores_selecionados)
     mensagem_ingredientes = ", ".join(ingredientes_selecionados)
     mensagem_pedido = f"Pedido realizado: {quantidade} pizza(s) {tamanho} com os sabores: {mensagem_sabores}.\n"
     mensagem_pedido += f"Ingredientes adicionais: {mensagem_ingredientes}.\n"
-    mensagem_pedido += f"Total a pagar: R${(total + total_ingredientes):.2f}"
+    mensagem_pedido += f"Total a pagar: R${(total_pedido):.2f}"
     
     if messagebox.askyesno("Confirmar Pedido", mensagem_pedido):
         messagebox.showinfo("Pedido Realizado", "Seu pedido foi confirmado!")
+        elo = mysql.connector.connect(host='127.0.0.1',user='root',password='',database='pizzadofe')
+        cursor = elo.cursor()
+        cursor.execute("INSERT INTO pedidos (data, tamanho, quantidade, valor_total) VALUES (%s, %s, %s, %s)", (datetime.datetime.now(), tamanho, quantidade, total_pedido))
+        elo.commit()
+        elo.close()
 
 tamanhos = ["Pequena", "Média", "Grande"]
 precos = {"Pequena": 17.00, "Média": 25.00, "Grande": 32.00}
