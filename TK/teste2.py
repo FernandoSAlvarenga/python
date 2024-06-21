@@ -1,74 +1,156 @@
-import tkinter as tk  # Importa o módulo tkinter para construir interfaces gráficas
-from tkinter import messagebox  # Importa a classe messagebox de tkinter para mostrar caixas de diálogo
+import tkinter as tk
+from tkinter import messagebox
+import mysql.connector
 
-# Função para processar o pedido quando o botão "Pedir" é clicado
+
+
+# Conectar ao MySQL
+elo = mysql.connector.connect(
+    host='127.0.0.1',
+    user='root',
+    password='',
+    database='pizzadofe'
+)
+
+# Verificar se o banco de dados existe
+cursor = elo.cursor()
+cursor.execute('SELECT COUNT(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = "pizzadofe";')
+num_results = cursor.fetchone()[0]
+
+# Se o banco de dados não existe, criá-lo
+if num_results == 0:
+    cursor.execute('CREATE DATABASE pizzadofe;')
+    elo.commit()
+
+    # Reconectar especificando o banco de dados recém-criado
+    elo = mysql.connector.connect(
+        host='127.0.0.1',
+        user='root',
+        password='',
+        database='pizzadofe'
+    )
+    cursor = elo.cursor()
+
+    # Criar tabelas
+    cursor.execute('''
+        CREATE TABLE pedidos (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            data DATE NOT NULL,
+            tamanho VARCHAR(255),
+            quantidade INT,
+            valor_total DECIMAL(10,2) NOT NULL
+        )
+    ''')
+    #Criar contatos
+    cursor.execute('''
+        CREATE TABLE clientes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(255) NOT NULL,
+            endereco VARCHAR(255) NOT NULL,
+            telefone VARCHAR(20) NOT NULL
+        )
+    ''')
+
+    elo.commit()
+
 def fazer_pedido():
-    tamanho = var_tamanho.get()  # Obtém o tamanho selecionado da pizza
+    tamanho = var_tamanho.get()
+    
     try:
-        quantidade = int(entrada_quantidade.get())  # Obtém a quantidade de pizzas (convertido para int)
+        quantidade = int(entrada_quantidade.get())
         if quantidade <= 0:
-            raise ValueError  # Lança um erro se a quantidade for menor ou igual a zero
+            raise ValueError
     except ValueError:
         messagebox.showerror("Erro", "Por favor, insira um número válido de pizzas.")
-        return  # Mostra uma mensagem de erro se a quantidade não for válida e retorna
+        return
 
-    num_sabores = var_sabores.get()  # Obtém o número de sabores selecionado
+    sabores_selecionados = []
+    for i, sabor_var in enumerate(sabores_vars):
+        if sabor_var.get() == 1:
+            sabores_selecionados.append(sabores[i])
 
-    # Verifica se o número de sabores é válido para o tamanho selecionado
-    if tamanho == "Pequena" and num_sabores != 1:
+    if tamanho == "Pequena" and len(sabores_selecionados) != 1:
         messagebox.showerror("Erro", "Pizza pequena só pode ter 1 sabor.")
         return
-    elif tamanho == "Média" and num_sabores not in [1, 2]:
-        messagebox.showerror("Erro", "Pizza média só pode ter 1 ou 2 sabores.")
+    elif tamanho == "Média" and len(sabores_selecionados) > 2:
+        messagebox.showerror("Erro", "Pizza média só pode ter até 2 sabores.")
         return
-    elif tamanho == "Grande" and num_sabores not in [1, 2, 4]:
-        messagebox.showerror("Erro", "Pizza grande só pode ter 1, 2 ou 4 sabores.")
+    elif tamanho == "Grande" and len(sabores_selecionados) > 4:
+        messagebox.showerror("Erro", "Pizza grande só pode ter até 4 sabores.")
         return
-
-    total_pizzas = quantidade  # Total de pizzas é a quantidade especificada
-    total = precos[tamanho] * total_pizzas  # Calcula o preço total das pizzas com base no tamanho
-
-    # Monta a descrição detalhada do pedido
-    itens_cobrados = f"Descrição do Pedido:\n\n"
-    itens_cobrados += f"Tamanho: {tamanho}\n"
-    itens_cobrados += f"Quantidade: {quantidade}\n"
-    itens_cobrados += f"Sabores: {num_sabores}\n"
 
     ingredientes_selecionados = []
-    # Verifica quais ingredientes adicionais foram selecionados
-    for ing in ingredientes:
-        if ingredientes_vars[ing].get() == 1:
-            ingredientes_selecionados.append(ing)
-    
-    # Se houver ingredientes selecionados, adiciona-os à descrição do pedido e calcula o custo total
-    if ingredientes_selecionados:
-        itens_cobrados += "Ingredientes Adicionais:\n"
-        for ing in ingredientes_selecionados:
-            preco_por_ingrediente = precos_ingredientes[ing]
-            total_ingrediente = preco_por_ingrediente * total_pizzas
-            itens_cobrados += f"- {ing}: R${preco_por_ingrediente:.2f} x {total_pizzas} = R${total_ingrediente:.2f}\n"
-            total += total_ingrediente
-    
-    itens_cobrados += f"\nTotal a pagar: R${total:.2f}"  # Adiciona o total geral ao pedido
+    for i, ing_var in enumerate(ingredientes_vars):
+        if ing_var.get() == 1:
+            ingredientes_selecionados.append(ingredientes[i])
 
-    mensagem_pedido = f"Pedido realizado: {quantidade} pizza(s) {tamanho} com {num_sabores} sabor(es).\n\n{itens_cobrados}"
-    # Pergunta ao usuário se deseja confirmar o pedido
+    total = precos[tamanho] * quantidade
+    total_ingredientes = sum(precos_ingredientes[ing] for ing in ingredientes_selecionados) * quantidade
+
+    mensagem_sabores = ", ".join(sabores_selecionados)
+    mensagem_ingredientes = ", ".join(ingredientes_selecionados)
+    mensagem_pedido = f"Pedido realizado: {quantidade} pizza(s) {tamanho} com os sabores: {mensagem_sabores}.\n"
+    mensagem_pedido += f"Ingredientes adicionais: {mensagem_ingredientes}.\n"
+    mensagem_pedido += f"Total a pagar: R${(total + total_ingredientes):.2f}"
+    
     if messagebox.askyesno("Confirmar Pedido", mensagem_pedido):
-        messagebox.showinfo("Pedido Realizado", "Seu pedido foi confirmado!")  # Mostra uma mensagem de confirmação do pedido
+        messagebox.showinfo("Pedido Realizado", "Seu pedido foi confirmado!")
 
-# Definição dos tamanhos disponíveis e seus preços
 tamanhos = ["Pequena", "Média", "Grande"]
 precos = {"Pequena": 17.00, "Média": 25.00, "Grande": 32.00}
 
-# Definição dos ingredientes disponíveis e seus preços
+sabores = [
+    "Frango",
+    "4 Queijos",
+    "Iscas de Carne ao Alho e Óleo",
+    "Brócolis com Queijo Cremoso"
+]
+
 ingredientes = ["Queijo Extra", "Pepperoni", "Bacon"]
 precos_ingredientes = {"Queijo Extra": 6.00, "Pepperoni": 9.00, "Bacon": 7.00}
 
-# Criação da janela principal da aplicação tkinter
 janela = tk.Tk()
-janela.title("Pedido de Pizza")  # Define o título da janela
+janela.title("Pedido de Pizza")
 
-# Criação e posicionamento dos elementos na janela (rótulos, menus, entradas, botões, etc.)
-# Aqui estão presentes labels, entradas de texto, opções de menu, botões e checkboxes.
+lbl_titulo = tk.Label(janela, text="Escolha o Tamanho da Pizza", font=("Helvetica", 16))
+lbl_titulo.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
 
-janela.mainloop()  # Inicia o loop principal da interface gráfica tkinter
+lbl_precos = tk.Label(janela, text=f"Pequena: R${precos['Pequena']:.2f}\nMédia: R${precos['Média']:.2f}\nGrande: R${precos['Grande']:.2f}")
+lbl_precos.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+
+lbl_tamanho = tk.Label(janela, text="Tamanho da Pizza:")
+lbl_tamanho.grid(row=2, column=0, padx=5, pady=5)
+var_tamanho = tk.StringVar(janela)
+var_tamanho.set(tamanhos[0])
+menu_tamanho = tk.OptionMenu(janela, var_tamanho, *tamanhos)
+menu_tamanho.grid(row=2, column=1, padx=5, pady=5)
+
+lbl_sabores = tk.Label(janela, text="Sabores:")
+lbl_sabores.grid(row=3, column=0, padx=5, pady=5, sticky="w")
+
+sabores_vars = []
+for i, sabor in enumerate(sabores):
+    var_sabor = tk.IntVar(janela)
+    cb_sabor = tk.Checkbutton(janela, text=sabor, variable=var_sabor)
+    cb_sabor.grid(row=4 + i, column=0, padx=5, pady=2, sticky="w")
+    sabores_vars.append(var_sabor)
+
+lbl_ingredientes = tk.Label(janela, text="Ingredientes Adicionais:")
+lbl_ingredientes.grid(row=4 + len(sabores), column=0, padx=5, pady=5, sticky="w")
+
+ingredientes_vars = []
+for i, ingrediente in enumerate(ingredientes):
+    var_ingrediente = tk.IntVar(janela)
+    cb_ingrediente = tk.Checkbutton(janela, text=ingrediente, variable=var_ingrediente)
+    cb_ingrediente.grid(row=5 + len(sabores) + i, column=0, padx=5, pady=2, sticky="w")
+    ingredientes_vars.append(var_ingrediente)
+
+lbl_quantidade = tk.Label(janela, text="Quantidade de Pizzas:")
+lbl_quantidade.grid(row=5 + len(sabores) + len(ingredientes), column=0, padx=5, pady=5)
+entrada_quantidade = tk.Entry(janela)
+entrada_quantidade.grid(row=5 + len(sabores) + len(ingredientes), column=1, padx=5, pady=5)
+
+botao_pedido = tk.Button(janela, text="Pedir", command=fazer_pedido)
+botao_pedido.grid(row=6 + len(sabores) + len(ingredientes), column=0, columnspan=2, padx=5, pady=5)
+
+janela.mainloop()
