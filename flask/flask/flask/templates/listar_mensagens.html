@@ -1,0 +1,34 @@
+{% extends 'template.html' %}
+
+{% block content %}
+    <h2>Lista de Mensagens</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Mensagem</th>
+                <th>Situação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mensagem in mensagens %}
+                <tr>
+                    <td>{{ mensagem.nome }}</td>
+                    <td>{{ mensagem.email }}</td>
+                    <td>{{ mensagem.mensagem }}</td>
+                    <td>{{ mensagem.situacao }}</td>
+                    <td>
+                        {% if mensagem.situacao != 'Lida' %}
+                            <form method="post" action="{{ url_for('marcar_lida', id=mensagem.id) }}" style="display: inline;">
+                                <input type="submit" value="Marcar como Lida">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('index') }}">Voltar</a>
+{% endblock %}

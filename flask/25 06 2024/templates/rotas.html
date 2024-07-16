@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotas no Flask: Navegando entre Páginas com Simplicidade</title>
+</head>
+<body style="text-align: center;font-size: 25px;font-family: Segoe UI;">
+    <h1 style="text-align: center; font-size: 25px; font-family: Segoe UI;">Rotas no Flask: Navegando entre Páginas com Simplicidade</h1>
+
+    <p>No Flask, as rotas, também conhecidas como endereços URL ou caminhos, são a base para criar interfaces web dinâmicas e interativas. Elas permitem que você mapeie URLs específicas para funções Python que geram o conteúdo HTML a ser exibido no navegador do usuário.</p>
+
+    <h2>Funcionamento Básico:</h2>
+
+    <ol>
+        <li>
+            <strong>Decorador @app.route:</strong> O Flask utiliza o decorador @app.route para associar uma função Python a uma URL específica.
+        </li>
+        <li>
+            <strong>Argumento path:</strong> O decorador @app.route recebe um argumento path que define a URL que acionará a função decorada.
+        </li>
+        <li>
+            <strong>Função de Manipulação:</strong> A função decorada é responsável por gerar o conteúdo HTML a ser exibido na página correspondente à URL.
+        </li>
+    </ol>
+    <div class="divimg">
+        <img class="imgpython" src="{{url_for('static', filename='giphy.gif')}}">
+    </div>
+</body>
+</html>

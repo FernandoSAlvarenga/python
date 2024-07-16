@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"> 
+    <body>
+    <h2 style="text-align: center; font-size: 25px; font-family: Segoe UI;">Contatos</h2>
+    <table>
+      <thead>
+          <tr>
+            <th>Nome</th>
+              <th>Email</th>
+              <th>Mensagem</th>
+              <th>Ação</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for contato in contatos %}
+              <tr>
+                  <td>{{ contato[1] }}</td>
+                  <td>{{ contato[2] }}</td>
+                  <td>{{ contato[3] }}</td>
+                  <td>
+                    {% if contato[10] == 0%}
+                    <button class="editar">Lido</button>
+                    {%else%}
+                    <button>Não lido</button>
+                    {% endif %}
+
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</body>
+</html>
+      
+ 

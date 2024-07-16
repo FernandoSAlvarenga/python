@@ -1,0 +1,31 @@
+{% extends 'template.html' %}
+
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+<h1>Formulário de Contato</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form method="POST" action="/contato">
+    {{ form.csrf_token }}
+    <label for="nome">Nome:</label>
+    {{ form.nome(size=32) }}<br><br>
+
+    <label for="email">Email:</label>
+    {{ form.email(size=64) }}<br><br>
+
+    <label for="mensagem">Mensagem:</label><br>
+    {{ form.mensagem(rows=4) }}<br><br>
+
+    <input type="submit" value="Enviar Mensagem">
+</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Erro - Seu Aplicativo Flask</title>
+</head>
+<body>
+    <h1>Ocorreu um Erro!</h1>
+
+    <p>Desculpe, estamos enfrentando problemas técnicos no momento.</p>
+
+    {% if mensagem_erro %}
+        <p><strong>Detalhes do Erro:</strong> {{ mensagem_erro }}</p>
+    {% endif %}
+
+    <p>Por favor, tente novamente mais tarde.</p>
+</body>
+</html>

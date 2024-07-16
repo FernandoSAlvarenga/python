@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>Meu Aplicativo</h1>
+        <nav>
+            <ul>
+                <li><a href="{{url_for('index')}}">PÁGINA INICIAL</a></li>
+                <li><a href="{{url_for('sobre')}}">SOBRE</a></li>
+                <li><a href="{{url_for('contato')}}">CONTATO</a></li>
+                <!-- Ajuste aqui para o endpoint correto -->
+                <li><a href="#">ATENDIMENTO</a></li>
+                {% if 'usuario_id' in session %}
+                <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">LOGIN</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Meu Aplicativo. Todos os direitos reservados.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{%block titulo%}
+Contatos
+{%endblock%}
+{% block conteudo%}
+<h2 style="text-align: center; font-size: 25px; font-family: Segoe UI;">Contatos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Mensagem</th>
+            <th>Situação</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contato in contatos %}
+        <tr>
+            <td>{{ contato[1] }}</td>
+            <td>{{ contato[2] }}</td>
+            <td>{{ contato[3] }}</td>
+            <td>
+                {{contato[4] }}
+            <td>
+                {% if contato[4] == 'Finalizado' %}
+                <a href="" class="Finalizado">Finalizado</a>
+                {% else %}
+                <a href="/finalizar_atendimento/{{ contato[0]}}" class="editar">Finalizar Atendimento</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+{%endblock%}
